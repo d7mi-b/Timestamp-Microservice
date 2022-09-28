@@ -24,97 +24,32 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get(`/api/1451001600000`, function (req, res) {
-  res.json({"unix":1451001600000, "utc":"Fri, 25 Dec 2015 00:00:00 GMT"});
-});
-
 app.get(`/api/:date?`, function (req, res) {
-  const date = new Date(req.params.date);
-
-  if (Object.prototype.toString.call(date) === "[object Date]") {
-    // it is a date
-    if (isNaN(date)) { // d.getTime() or d.valueOf() will also work
-      // date object is not valid
-      res.json({ error : "Invalid Date" })
-    } else {
-      // date object is valid
-      let day;
-      let month;
-      switch(date.getDay()) {
-        case 1:
-          day = 'Mon';
-          break;
-        case 2:
-          day = 'Thu';
-          break;
-        case 3:
-          day = 'Wed';
-          break;
-        case 4:
-          day = 'Tue';
-          break;
-        case 5:
-          day = 'Fri';
-          break;
-        case 6:
-          day = 'Sat';
-          break;
-        case 7:
-          day = 'Sun';
-          break;
-      }
-
-      switch(date.getMonth()) {
-        case 1:
-          month = 'Jan';
-          break;
-        case 2:
-          month = 'Feb';
-          break;
-        case 3:
-          month = 'Mar';
-          break;
-        case 4:
-          month = 'Apr';
-          break;
-        case 5:
-          month = 'May';
-          break;
-        case 6:
-          month = 'Jun';
-          break;
-        case 7:
-          month = 'Jul';
-          break;
-        case 8:
-          month = 'Aug';
-          break;
-        case 9:
-          month = 'Sep';
-          break;
-        case 10:
-          month = 'Oct';
-          break;
-        case 11:
-          month = 'Nov';
-          break;
-        case 12:
-          month = 'Dec';
-          break;
-      }
-
-      res.json(
-        {
-          "unix": date.getTime(), 
-          "utc":`${date.toUTCString()}`
-        }
-      );
-    }
-  } else {
-    // not a date object
-    res.json({ error : "Invalid Date" })
-  }
+  const date = req.params.date;
   
+  if (/[0-9]{13}/.test(date)) {
+    res.status(200).json({
+      'unix': new Date(+date).getTime(),
+      'utc': new Date(+date).toUTCString(),
+    })
+  }
+  else if (new Date(date) == undefined) {
+    res.status(200).json({
+      'unix': new Date(date).getTime(),
+      'utc': new Date(date).toUTCString(),
+    })
+  }
+  else if (new Date(date) == 'Invalid Date') {
+    res.status(400).json({
+      "error" : "Invalid Date"
+    })
+  }
+  else { 
+    res.status(200).json({
+      'unix': new Date(date).getTime(),
+      'utc': new Date(date).toUTCString(),
+    })
+  }
 });
 
 // listen for requests :)
