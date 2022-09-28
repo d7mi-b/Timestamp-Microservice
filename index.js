@@ -35,8 +35,8 @@ app.get(`/api/:date?`, function (req, res) {
   }
   else if (new Date(date) == undefined) {
     res.status(200).json({
-      'unix': new Date(date).getTime(),
-      'utc': new Date(date).toUTCString(),
+      'unix': new Date().getTime(),
+      'utc': new Date().toUTCString(),
     })
   }
   else if (new Date(date) == 'Invalid Date') {
