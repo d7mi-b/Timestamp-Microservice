@@ -39,7 +39,7 @@ app.get(`/api/:date?`, function (req, res) {
       'utc': new Date().toUTCString(),
     })
   }
-  else if (new Date(date) == 'Invalid Date') {
+  else if (new Date(date) == 'Invalid Date' || typeof +date && date.length < 13 && !date.includes('-')) {
     res.status(400).json({
       "error" : "Invalid Date"
     })
