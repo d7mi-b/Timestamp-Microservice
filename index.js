@@ -28,7 +28,7 @@ app.get(`/api/1451001600000`, function (req, res) {
   res.json({"unix":1451001600000, "utc":"Fri, 25 Dec 2015 00:00:00 GMT"});
 });
 
-app.get(`/api/:date`, function (req, res) {
+app.get(`/api/:date?`, function (req, res) {
   const date = new Date(req.params.date);
 
   if (Object.prototype.toString.call(date) === "[object Date]") {
@@ -103,7 +103,12 @@ app.get(`/api/:date`, function (req, res) {
           break;
       }
 
-      res.json({"unix": date.getTime(), "utc":`${day}, ${new Date().getDate()} ${month} ${new Date().getFullYear()} 00:00:00 GMT`});
+      res.json(
+        {
+          "unix": date.getTime(), 
+          "utc":`${date.toUTCString()}`
+        }
+      );
     }
   } else {
     // not a date object
