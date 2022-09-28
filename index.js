@@ -24,30 +24,30 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get(`/api/:date?`, function (req, res) {
+app.get("/api/:date?", function (req, res) {
   const date = req.params.date;
   
   if (/[0-9]{13}/.test(date)) {
     res.status(200).json({
-      'unix': new Date(+date).getTime(),
-      'utc': new Date(+date).toUTCString(),
+      "unix": new Date(+date).getTime(),
+      "utc": new Date(+date).toUTCString(),
     })
   }
   else if (new Date(date) == undefined) {
     res.status(200).json({
-      'unix': new Date().getTime(),
-      'utc': new Date().toUTCString(),
+      "unix": new Date().getTime(),
+      "utc": new Date().toUTCString(),
     })
   }
-  else if (new Date(date) == 'Invalid Date' || typeof +date && date.length < 13 && !date.includes('-')) {
+  else if (new Date(date) == "Invalid Date" || typeof +date && date.length < 13 && !date.includes("-")) {
     res.status(400).json({
       "error" : "Invalid Date"
     })
   }
   else { 
     res.status(200).json({
-      'unix': new Date(date).getTime(),
-      'utc': new Date(date).toUTCString(),
+      "unix": new Date(date).getTime(),
+      "utc": new Date(date).toUTCString(),
     })
   }
 });
