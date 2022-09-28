@@ -33,7 +33,7 @@ app.get("/api/:date?", function (req, res) {
       "utc": new Date(+date).toUTCString(),
     })
   }
-  else if (new Date(date) == undefined) {
+  else if (date == undefined) {
     res.status(200).json({
       "unix": new Date().getTime(),
       "utc": new Date().toUTCString(),
