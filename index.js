@@ -24,26 +24,26 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
-app.get("/api/:date?", function (req, res) {
+app.get("/api/", function (req, res) {
+  const unix = new Date().getTime();
+  const utc = new Date().toUTCString();
+  res.json({ unix: unix, utc: utc });
+});
+
+app.get("/api/:date", function (req, res) {
   const date = req.params.date;
   
-  if (!date) {
-    const unix = new Date().getTime();
-    const utc = new Date().toUTCString();
-    return res.json({ "unix": unix, "utc": utc });
-  }
-  else if (isNaN(+date) && new Date(date) != "Invalid Date") {
+  if (isNaN(+date) && new Date(date) != "Invalid Date") {
     const unix = new Date(date).getTime();
     const utc = new Date(date).toUTCString();
-    return res.json({ "unix": unix, "utc": utc });
+    res.json({ unix: unix, utc: utc });
   }
-  else if (!isNaN(+date)) {
-    const unix = new Date(+date).getTime();
+  else if (!isNaN(+date) && date.length === 13) {
     const utc = new Date(+date).toUTCString();
-    return res.json({ "unix": unix, "utc": utc });
+    res.json({ unix: +date, utc: utc });
   }
-  else if (new Date(date) == "Invalid Date") {
-    return res.json({ error: new Date(date) });
+  else {
+    res.json({ error: "Invalid Date" });
   }
 });
 
